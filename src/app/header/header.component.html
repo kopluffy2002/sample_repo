@@ -1,0 +1,14 @@
+<header>
+  <nav>
+    <ul>
+      <li><a href="calendar">Calendar</a></li>
+      <li><a href="message">Messages</a></li>
+      <li><a href="friends">Friends</a></li>
+      <li><a href="account">Account</a></li>
+    </ul>
+  </nav>
+  <div class="user-info">
+    <span *ngIf="user">Welcome {{ user }}</span>
+    <button (click)="logout()">Logout</button>                 
+  </div>
+</header>

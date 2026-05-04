@@ -1,0 +1,81 @@
+/* Style the form container */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    background-color: #f0f0f0; /* Set the background color */
+  }
+  
+  /* Style the form groups */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  /* Style input fields */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Style the checkbox and label */
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+  
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+  }
+  
+  /* Style the buttons */
+  button[type="submit"], button#login-button {
+    background-color: #1976d2;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+  
+    &:hover {
+      background-color: #125699;
+    }
+  }
+  
+  /* Media queries for responsiveness */
+  @media screen and (max-width: 768px) {
+    /* Adjust styles for screens up to 768px wide */
+  
+    /* Example: Reduce the padding on input fields for smaller screens */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 8px;
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+    /* Adjust styles for screens up to 576px wide */
+  
+    /* Example: Stack the form groups for very small screens */
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .checkbox-group {
+      flex-direction: column;
+      align-items: flex-start;
+  
+      input[type="checkbox"] {
+        margin-right: 0;
+        margin-bottom: 5px;
+      }
+    }
+  }
+  

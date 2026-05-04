@@ -1,0 +1,273 @@
+<div class="content" role="main">
+  <app-header></app-header>
+</div>
+
+<div class="account-heading">
+  <h2>Account</h2>
+</div>
+
+
+<div>
+  <section class="personal-info">
+    <h2>Personal Info</h2>
+    <div>
+      <form>
+        <div>
+          <strong>First Name:</strong>
+          <input type="text" [(ngModel)]="userData.firstname" name="firstname" />
+        </div>
+        <div>
+          <strong>Last Name:</strong>
+          <input type="text" [(ngModel)]="userData.lastname" name="lastname" />
+        </div>
+        <div>
+          <strong>Email:</strong>
+          <input type="email" [(ngModel)]="userData.email" name="email" [readonly]="true" />
+        </div>
+        <div>
+          <strong>Username:</strong>
+          <input type="text" [(ngModel)]="userData.username" name="username" [readonly]="true" />
+        </div>
+      </form>
+    </div>
+    <button (click)="savePersonalInfo()">Update Personal Info</button>
+    <button (click)="toggleEditCredentials()">Change Password</button>
+  </section>
+
+  <section class="personal-info" [ngStyle]="{ 'display': isEditCredentialsVisible ? 'block' : 'none' }">
+    <h2>Edit Credentials</h2>
+    <div>
+      <strong>Username:</strong>
+      <input type="text" [(ngModel)]="username" name="username" />
+    </div>
+    <div>
+      <strong>New Password:</strong>
+      <input type="password" [(ngModel)]="password" name="password" />
+    </div>
+    <div>
+      <strong>Repeat Password:</strong>
+      <input type="password" [(ngModel)]="repeatPassword" name="repeatPassword" />
+    </div>
+    <button (click)="changePassword()">Change Password</button>
+  </section>
+
+  <section class="personal-info">
+    <h2>Class Schedule</h2>
+    <div class="action-buttons">
+      <button (click)="openAddForm()">&#43;</button>
+      <button (click)="openEditForm()"><span>&#9998;</span></button>
+    </div>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Course Prefix</th>
+            <th>Course Code</th>
+            <th>Section</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Course Mode</th>
+            <th>Day of Week</th>
+            <th>Course Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of events">
+            <td>{{ event.course_prefix }}</td>
+            <td>{{ event.course_code }}</td>
+            <td>{{ event.section }}</td>
+            <td>{{ event.start_time }}</td>
+            <td>{{ event.end_time }}</td>
+            <td>{{ event.course_mode }}</td>
+            <td>{{ event.days_of_week }}</td>
+            <td>{{ event.course_name }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2>Meetings Schedule</h2>
+      <div class="action-buttons">
+        <button (click)="redirectToCalendar()">&#43;</button>
+        <button (click)="redirectToCalendar()"><span>&#9998;</span></button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Meeting Name</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Meeting Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let meeting of meetings">
+            <td>{{ meeting.meeting_name }}</td>
+            <td>{{ meeting.date | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ meeting.start_time }}</td>
+            <td>{{ meeting.end_time }}</td>
+            <td>{{ meeting.meeting_mode }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="personal-info">
+    <h2>Account Privacy</h2>
+    <div class="toggle-switch">
+      <input type="checkbox" id="switch" [(ngModel)]="isPublic" (change)="onToggleChange()">
+      <label for="switch" [class]="isPublic ? 'public' : 'private'">{{ isPublic ? 'Public' : 'Private' }}</label>
+    </div>
+  </section>
+
+
+  <section class="personal-info">
+    <h2>Account Termination</h2>
+    <button (click)="confirmDelete()" style="background-color: red;"><span>Delete</span></button>
+  </section>
+
+
+</div>
+<div class="add-form" *ngIf="isAddFormOpen">
+  <form (submit)="submitAddForm()">
+    <label>ADD SCHEDULE</label>
+    <label for="coursePrefix">Course Prefix:</label>
+    <input type="text" id="coursePrefix" name="coursePrefix" placeholder="Enter Course prefix"
+      [(ngModel)]="coursePrefix"
+      (ngModelChange)="coursePrefix = $event.toUpperCase(); fetchCourseCodesByPrefix(coursePrefix)" required>
+
+    <label for="courseCode">Course Code:</label>
+    <select id="courseCode" name="courseCode" [(ngModel)]="courseCode">
+      <option value="" disabled>Select a course code</option>
+      <option *ngFor="let code of courseCodes" [value]="code">{{ code }}</option>
+    </select>
+
+    <label for="section">Section:</label>
+    <input type="text" id="section" name="section" placeholder="Enter Section" [(ngModel)]="section"
+      (ngModelChange)="section = $event.toUpperCase();" required>
+
+    <label for="startTime">Start Time:</label>
+    <input type="time" id="startTime" name="startTime" [(ngModel)]="startTime" required>
+
+    <label for="endTime">End Time:</label>
+    <input type="time" id="endTime" name="endTime" [(ngModel)]="endTime" required>
+
+    <label for="courseMode">Course Mode:</label>
+    <label>
+      <input type="radio" id="inPerson" name="courseMode" value="In Person" [(ngModel)]="courseMode">
+      In Person
+    </label>
+    <label>
+      <input type="radio" id="asynchronous" name="courseMode" value="Asynchronous" [(ngModel)]="courseMode">
+      Asynchronous
+    </label>
+    <label>
+      <input type="radio" id="online" name="courseMode" value="Online" [(ngModel)]="courseMode">
+      Online
+    </label>
+
+    <label for="daysOfWeek">Days of the Week:</label>
+    <div class="days-checkboxes">
+      <label>
+        <input type="checkbox" name="daysOfWeek" value="Sun" [(ngModel)]="selectedDaysOfWeek.Sun"> Sun
+      </label>
+      <label>
+        <input type="checkbox" name="daysOfWeek" value="Mon" [(ngModel)]="selectedDaysOfWeek.Mon"> Mon
+      </label>
+      <label>
+        <input type="checkbox" name="daysOfWeek" value="Tue" [(ngModel)]="selectedDaysOfWeek.Tue"> Tue
+      </label>
+      <label>
+        <input type="checkbox" name="daysOfWeek" value="Wed" [(ngModel)]="selectedDaysOfWeek.Wed"> Wed
+      </label>
+      <label>
+        <input type="checkbox" name="daysOfWeek" value="Thu" [(ngModel)]="selectedDaysOfWeek.Thu"> Thu
+      </label>
+      <label>
+        <input type="checkbox" name="daysOfWeek" value="Fri" [(ngModel)]="selectedDaysOfWeek.Fri"> Fri
+      </label>
+      <label>
+        <input type="checkbox" name="daysOfWeek" value="Sat" [(ngModel)]="selectedDaysOfWeek.Sat"> Sat
+      </label>
+    </div>
+
+    <button type="submit">ADD</button>
+  </form>
+</div>
+<div class="edit-form bottom-right-box" *ngIf="isEditFormOpen && selectedEvent">
+  <div class="event-section">
+    <div class="event-buttons">
+      <button *ngFor="let event of events" (click)="selectEvent(event)"
+        [ngClass]="{ 'selected-event': event === selectedEvent }">
+        {{ event.course_prefix }} - {{ event.course_code }}
+      </button>
+    </div>
+    <button (click)="deleteEvent()" class="delete-button">DELETE</button>
+  </div>
+  <div class="form-section">
+    <label>EDIT CLASS</label>
+    <form (submit)="updateEvent()">
+      <label for="coursePrefix">Course Prefix:</label>
+      <input type="text" id="coursePrefix" name="coursePrefix" [(ngModel)]="selectedEvent.course_prefix"
+        [readonly]="true">
+
+      <label for="courseCode">Course Code:</label>
+      <input type="text" id="courseCode" name="courseCode" [(ngModel)]="selectedEvent.course_code" [readonly]="true">
+
+      <label for="section">Section:</label>
+      <input type="text" id="section" name="section" [(ngModel)]="selectedEvent.section" [readonly]="true">
+
+      <label for="startTime">Start Time:</label>
+      <input type="time" id="startTime" name="startTime" [(ngModel)]="selectedEvent.start_time">
+
+      <label for="endTime">End Time:</label>
+      <input type="time" id="endTime" name="endTime" [(ngModel)]="selectedEvent.end_time">
+
+      <label for="courseMode">Course Mode:</label>
+      <label>
+        <input type="radio" id="inPerson" name="courseMode" value="In Person" [(ngModel)]="selectedEvent.course_mode">
+        In Person
+      </label>
+      <label>
+        <input type="radio" id="asynchronous" name="courseMode" value="Asynchronous"
+          [(ngModel)]="selectedEvent.course_mode">
+        Asynchronous
+      </label>
+      <label>
+        <input type="radio" id="online" name="courseMode" value="Online" [(ngModel)]="selectedEvent.course_mode">
+        Online
+      </label>
+      <label for="daysOfWeek">Days of the Week:</label>
+      <div class="days-checkboxes">
+        <div class="row">
+          <label>
+            <input type="checkbox" name="daysOfWeek" value="Sun" [(ngModel)]="selectedDaysOfWeek.Sun"> Sun
+          </label>
+          <label>
+            <input type="checkbox" name="daysOfWeek" value="Mon" [(ngModel)]="selectedDaysOfWeek.Mon"> Mon
+          </label>
+          <label>
+            <input type="checkbox" name="daysOfWeek" value="Tue" [(ngModel)]="selectedDaysOfWeek.Tue"> Tue
+          </label>
+          <label>
+            <input type="checkbox" name="daysOfWeek" value="Wed" [(ngModel)]="selectedDaysOfWeek.Wed"> Wed
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            <input type="checkbox" name="daysOfWeek" value="Thu" [(ngModel)]="selectedDaysOfWeek.Thu"> Thu
+          </label>
+          <label>
+            <input type="checkbox" name="daysOfWeek" value="Fri" [(ngModel)]="selectedDaysOfWeek.Fri"> Fri
+          </label>
+          <label>
+            <input type="checkbox" name="daysOfWeek" value="Sat" [(ngModel)]="selectedDaysOfWeek.Sat"> Sat
+          </label>
+        </div>
+      </div>
+      <button type="submit">UPDATE</button>
+    </form>
+  </div>
+</div>

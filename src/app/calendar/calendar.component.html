@@ -1,0 +1,219 @@
+<div class="content" role="main">
+  <app-header></app-header>
+</div>
+<button class="notification-button" (click)="goToNotifications()">
+  <span></span> <!-- Bell icon Unicode -->
+</button>
+<h2>Calendar</h2>
+<div class="calendar">
+  <div class="calendar-nav">
+    <button (click)="prevMonth()">Previous</button>
+    <span class="bold-month">
+      {{ currentDate | date: 'MMMM yyyy' | uppercase }}
+    </span>
+    <button (click)="nextMonth()">Next</button>
+  </div>
+  <div class="calendar-container">
+    <table>
+      <tr>
+        <ng-container *ngFor="let day of weekDays">
+          <th>{{ day }}</th>
+        </ng-container>
+      </tr>
+      <tr *ngFor="let row of days">
+        <ng-container *ngFor="let day of row">
+          <td [ngClass]="{
+            'today': day.isToday,
+            'selected': day.isSelected
+          }" >
+          <strong>{{ day.value === null ? ' ' : day.value }}</strong>
+            <div *ngFor="let event of day.events" class="event-box">
+              {{ event.course_prefix }} - {{ event.course_code }}<br>
+              {{ event.start_time }} - {{ event.end_time }}
+            </div>
+            <div *ngFor="let meeting of day.meetings" class="meeting-box" (click)="openMeeting(meeting)">
+              {{ meeting.meeting_name }}<br>
+              {{ meeting.start_time }} - {{ meeting.end_time }}
+            </div>
+          </td>                    
+        </ng-container>
+      </tr>
+    </table>
+  </div>
+  <div class="current-date">
+    <button (click)="goToCurrentMonth()">Go to Today</button>
+  </div>
+
+  <div class="date-selector">
+    <label for="selectedDate">Select Date: </label>
+    <input type="date" id="selectedDate" [(ngModel)]="selectedDate">
+    <button (click)="selectDateWithInput()">Show Date</button>
+  </div>
+  <div class="action-buttons">
+    <button (click)="openAddForm()">&#43;</button>
+    <button (click)="openEditForm()"><span>&#9998;</span></button>
+  </div>
+
+
+  <div class="modal" *ngIf="isModalOpen && reminders.length > 0">
+    <div class="modal-content">
+      <h3><b>Todays Reminders</b></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Meeting Name</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Meeting Mode</th>
+            <th>Invitees</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reminder of reminders">
+            <td>{{ reminder.date | date: 'shortDate' }}</td>
+            <td>{{ reminder.meeting_name }}</td>
+            <td>{{ reminder.start_time }}</td>
+            <td>{{ reminder.end_time }}</td>
+            <td>{{ reminder.meeting_mode }}</td>
+            <td>{{ reminder.invitees }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <button (click)="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showMeeting">
+    <div class="modal-content">
+      <h2>{{ showMeeting.meeting_name }}</h2>
+      <p>{{ showMeeting.start_time }} - {{ showMeeting.end_time }}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Invitees</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invitee of showMeeting.inviteesArray">{{ invitee }}</tr>
+        </tbody>
+      </table>
+      <button (click)="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <!-- Add form (initially hidden) -->
+  <div class="add-form" *ngIf="isAddFormOpen">
+    <form (submit)="submitAddForm()">
+      <label>ADD MEETING</label>
+    
+      <label for="meetingName">Meeting Name:</label>
+      <input type="text" id="meetingName" name="meetingName" [(ngModel)]="meetingName" required>
+    
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" [(ngModel)]="date" required>
+    
+    <label for="startTime">Start Time:</label>
+    <div class="time-input-container">
+      <input type="time" id="startTime" name="startTime" [(ngModel)]="startTime" required>
+      <button type="button" (click)="confirmTime('startTime')">Set</button>
+    </div>
+
+    <label for="endTime">End Time:</label>
+    <div class="time-input-container">
+      <input type="time" id="endTime" name="endTime" [(ngModel)]="endTime" required>
+      <button type="button" (click)="confirmTime('endTime')">Set</button>
+    </div>
+    
+      <label for="meetingMode">Meeting Mode:</label>
+      <label>
+        <input type="radio" id="inPerson" name="meetingMode" value="In Person" [(ngModel)]="meetingMode" required>
+        In Person
+      </label>
+      <label>
+        <input type="radio" id="asynchronous" name="meetingMode" value="Asynchronous" [(ngModel)]="meetingMode" required>
+        Asynchronous
+      </label>
+      <label>
+        <input type="radio" id="online" name="meetingMode" value="Online" [(ngModel)]="meetingMode" required>
+        Online
+      </label>
+      <label for="invitees">Add Invitees:</label>
+      <input type="text" id="invitees" name="invitees" [(ngModel)]="inviteeSearch" (input)="searchFriends()" placeholder="Search for friends">
+      <div class="invitee-suggestions" [class.overflow-scroll]="friendSuggestions.length > 5">
+        <div *ngFor="let suggestion of friendSuggestions">
+          <span (click)="addInvitee($event, suggestion); $event.stopPropagation();">{{ suggestion }}</span>
+        </div>
+      </div>
+
+      <!-- Display added invitees -->
+      <div *ngIf="addedInvitees.length > 0" class="added-invitees" [class.overflow-scroll]="addedInvitees.length > 5">
+        <p>Added Participants:</p>
+        <div *ngFor="let invitee of addedInvitees">
+          {{ invitee }}
+          <button type="button" class="remove-invitee-button" (click)="removeInvitee($event, invitee)"><b>X</b></button>
+        </div>
+      </div>
+
+      <button type="submit">ADD</button>
+    </form>    
+  </div>
+
+  <!-- Edit form (initially hidden) -->
+  <div class="edit-form bottom-right-box" *ngIf="isEditFormOpen && selectedMeeting">
+    <div class="event-section">
+      <!-- Event Buttons -->
+      <div class="event-buttons">
+        <label style="font-weight: bold; font-size: 12px;">SELECT MEETING</label>
+        <ng-container *ngFor="let meeting of meetings">
+          <button (click)="selectMeeting(meeting)"
+            [ngClass]="{ 'selected-meeting': meeting === selectedMeeting }"
+            *ngIf="usernamePresentInMeeting(meeting.username)">
+            {{ meeting.meeting_name }} - {{ meeting.date | date: 'yyyy-MM-dd' }}
+          </button>
+        </ng-container>
+      </div>           
+      <!-- Delete Button -->
+      <button (click)="deleteMeeting()" class="delete-button">Delete</button>
+    </div>
+  
+    <div class="form-section">
+      <label>EDIT MEETING</label>
+  
+      <form (submit)="updateMeeting()">
+        <label for="meetingName">Meeting Name:</label>
+        <input type="text" id="meetingName" name="meetingName" [(ngModel)]="selectedMeeting.meeting_name" required readonly>
+  
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" [ngModel]="selectedMeeting.date | date:'yyyy-MM-dd'" required readonly>
+  
+        <label for="startTime">Start Time:</label>
+        <div class="time-input-container">
+          <input type="time" id="startTime" name="startTime" [(ngModel)]="selectedMeeting.start_time" required>
+          <button type="button" (click)="confirmTime('startTime')">Set</button>
+        </div>
+  
+        <label for="endTime">End Time:</label>
+        <div class="time-input-container">
+          <input type="time" id="endTime" name="endTime" [(ngModel)]="selectedMeeting.end_time" required>
+          <button type="button" (click)="confirmTime('endTime')">Set</button>
+        </div>
+  
+        <label for="meetingMode">Meeting Mode:</label>
+        <label>
+          <input type="radio" id="inPerson" name="meetingMode" value="In Person" [(ngModel)]="selectedMeeting.meeting_mode" required>
+          In Person
+        </label>
+        <label>
+          <input type="radio" id="asynchronous" name="meetingMode" value="Asynchronous" [(ngModel)]="selectedMeeting.meeting_mode" required>
+          Asynchronous
+        </label>
+        <label>
+          <input type="radio" id="online" name="meetingMode" value="Online" [(ngModel)]="selectedMeeting.meeting_mode" required>
+          Online
+        </label>
+        <button type="submit">UPDATE</button>
+      </form>
+    </div>
+  </div>    
+</div>

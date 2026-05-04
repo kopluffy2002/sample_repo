@@ -1,0 +1,21 @@
+# ─── Backend Dockerfile ───────────────────────────────────────────────────────
+FROM node:18-slim
+
+WORKDIR /app
+
+# Install build tools needed for native modules (argon2, etc.)
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install --omit=dev
+
+# Create uploads directory
+RUN mkdir -p uploads
+
+# Copy server
+COPY server.js ./
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]

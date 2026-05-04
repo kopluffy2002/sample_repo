@@ -1,0 +1,35 @@
+.custom-button:hover {
+  transform: scale(1.1);
+}
+
+.content {
+    display: flex;
+    margin: 32px auto 32px;
+    padding: 0 16px;
+    max-width: 960px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center-align text */
+  }
+  .button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .custom-button {
+    background-color: #1976d2;
+    color: #fff;
+    padding: 10px ;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5px;
+    transition: transform 0.2s;
+  }
+  
+  /* Add some margin between the buttons */
+  .custom-button + .custom-button {
+    margin-left: 10px;
+  }
+  

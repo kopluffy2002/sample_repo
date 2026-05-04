@@ -1,0 +1,75 @@
+/* Style the login container */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  background-color: #f0f0f0;
+}
+
+/* Style form groups */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Style labels */
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Style input fields */
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style the submit button */
+button[type="submit"] {
+  background-color: #1976d2;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #125699;
+  }
+}
+
+/* Add this CSS to your component's .scss or .css file */
+.card {
+margin-top: 20px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+transition: 0.3s;
+}
+
+.card:hover {
+box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+background-color: #007bff;
+color: white;
+padding: 10px;
+}
+
+.card-body {
+padding: 20px;
+}
+
+.btn-primary {
+background-color: #007bff;
+border: none;
+}
+
+.btn-primary:hover {
+background-color: #0056b3;
+}

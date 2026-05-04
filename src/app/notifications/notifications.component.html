@@ -1,0 +1,25 @@
+<div class="content" role="main">
+  <app-header></app-header>
+</div>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Notifications</mat-card-title>
+    <button mat-icon-button class="clear-button" (click)="clearNotifications()">
+      <mat-icon aria-label="Clear All">clear</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngFor="let notification of notifications" class="notification-item" (click)="redirectToComponent(notification)">
+      <div class="notification-bar">
+        <mat-card-title>{{ notification.content }}</mat-card-title>
+        <button mat-icon-button class="close-button" (click)="closeNotification(notification)">
+          <mat-icon aria-label="Close">close</mat-icon>
+        </button>
+      </div>
+      <div class="notification-content">
+        <div class="timestamp">{{ notification.timestamp | date:'medium' }}</div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

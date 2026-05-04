@@ -1,0 +1,30 @@
+<div class="content" role="main">
+  <login-signup></login-signup> <!-- Include the 'login-signup' component here -->
+</div>
+<div class="signup-container">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input type="text" placeholder="First Name" [(ngModel)]="firstname" name="firstname" required>
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder="Last Name" [(ngModel)]="lastname" name="lastname" required>
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder="Userame" [(ngModel)]="userName" name="userName" required>
+    </div>
+    <div class="form-group">
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
+    </div>
+    <div class="form-group">
+      <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+    </div>
+    <div class="checkbox-group">
+      <input type="checkbox" id="proceed" [(ngModel)]="proceed" name="proceed" required>
+      <label for="proceed">I agree to the terms and conditions</label>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+</div>

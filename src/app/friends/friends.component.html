@@ -1,0 +1,125 @@
+<div class="content" role="main">
+  <app-header></app-header>
+</div>
+
+<div class="friends-heading">
+  <h2>My Friends</h2>
+</div>
+
+
+<div class="button-container">
+  <button (click)="showFriends('primary')" [class.active]="selectedTab === 'primary'">Primary</button>
+  <button (click)="showFriends('request')" [class.active]="selectedTab === 'request'">Request</button>
+</div>
+
+<div *ngIf="selectedTab === 'primary'">
+  <div class="friends-heading-inner">
+    <h3>Primary Friends</h3>
+  </div>
+  <button (click)="toggleAddFriendModal()">Add Friend</button>
+  <div class="modal" *ngIf="showAddFriend">
+    <div class="modal-content">
+      <h3>Add Friend</h3>
+      <input type="text" placeholder="Enter friend's username" [(ngModel)]="newFriendUsername"
+        (input)="filterFriendSuggestions()" />
+      <div *ngIf="friendSuggestions.length > 0" class="suggestions">
+        <p>Suggestions:</p>
+        <ul>
+          <li *ngFor="let suggestion of friendSuggestions" (click)="selectSuggestion(suggestion)">{{ suggestion }}</li>
+        </ul>
+      </div>
+      <button (click)="addFriend()">Add</button>
+      <button (click)="closeAddFriendModal()" class="cancel-button">Cancel</button>
+    </div>
+  </div>
+  <div class="friends-list">
+    <div class="friend-item" *ngFor="let friend of primaryFriends" (click)="loadFriendDetails(friend)">
+      <div>{{ friend }}</div>
+    </div>
+  </div>
+</div>
+<div class="modal" *ngIf="selectedFriendDetails">
+  <div class="modal-content">
+    <p>Username: {{ selectedFriendDetails.username }}</p>
+    <p>First Name: {{ selectedFriendDetails.firstname }}</p>
+    <p>Last Name: {{ selectedFriendDetails.lastname }}</p>
+    <p>Email: {{ selectedFriendDetails.email }}</p>
+    <button><span class="close" (click)="closeModal()">Close</span></button>
+    <button (click)="unfriend()" style="background-color: red; color: #fff;">Unfriend</button>
+    <button class="view-schedule-button" (click)="viewSchedule()">View Schedule</button>
+
+    <!-- Display schedule data -->
+    <div *ngIf="!isAccountSecured">
+      <div *ngIf="events.length > 0">
+        <h2>Events</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Course Name</th>
+              <th>Course Prefix</th>
+              <th>Course Code</th>
+              <th>Section</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Course Mode</th>
+              <th>Days of Week</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of events">
+              <td>{{ event.course_name }}</td>
+              <td>{{ event.course_prefix }}</td>
+              <td>{{ event.course_code }}</td>
+              <td>{{ event.section }}</td>
+              <td>{{ event.start_time }}</td>
+              <td>{{ event.end_time }}</td>
+              <td>{{ event.course_mode }}</td>
+              <td>{{ event.days_of_week }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="meetings.length > 0">
+        <h2>Meetings</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Meeting Name</th>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Meeting Mode</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let meeting of meetings">
+              <td>{{ meeting.meeting_name }}</td>
+              <td>{{ meeting.date }}</td>
+              <td>{{ meeting.start_time }}</td>
+              <td>{{ meeting.end_time }}</td>
+              <td>{{ meeting.meeting_mode }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Display account secured message -->
+    <p *ngIf="isAccountSecured">Account is secured. Cannot view schedule.</p>
+  </div>
+</div>
+<div *ngIf="selectedTab === 'request'">
+  <div class="friends-heading-inner">
+    <h3>Friend Requests</h3>
+  </div>
+  <div class="friends-list">
+    <div class="friend-item" *ngFor="let request of requestFriends">
+      {{ request }}
+      <div class="button-container">
+        <button (click)="acceptRequest(request)" class="accept-button">&#10003;</button>
+        <button (click)="deleteRequest(request)" class="delete-button">✖</button>
+      </div>
+    </div>
+  </div>
+</div>

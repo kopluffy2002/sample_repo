@@ -1,0 +1,87 @@
+mat-card {
+    width: 85%;
+    margin: 20px auto; /* Set margin to 'auto' for horizontal centering */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+/* Styling for notification bar */
+div.notification-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Styling for mat-card-header */
+  mat-card-header {
+    background-color: #3c74a2;
+    color: white;
+    padding: 12px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* Styling for clear button */
+  button.clear-button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Styling for notification div */
+  div.notification-item {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 8px;
+    overflow: hidden;
+    font-size: 14px;
+    padding: 16px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+  
+  /* Styling for notification div on hover */
+  div.notification-item:hover {
+    background-color: #ffffff;
+  }
+  
+  /* Styling for close button */
+  button.close-button {
+    background: none;
+    border: none;
+    color: #525050;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Styling for timestamp */
+  div.timestamp {
+    font-size: 12px;
+    color: #999;
+  }
+  
+  /* Styling for notification content */
+  div.notification-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Styling for mat-card-content */
+  mat-card-content {
+    padding: 16px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  

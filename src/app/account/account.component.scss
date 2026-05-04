@@ -1,0 +1,377 @@
+.account-heading {
+  h2{
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+  margin: 20px auto;
+  }
+}
+
+
+.add-form {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  display: flex;
+  z-index: 999;
+  width: 200px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="time"] {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 10px;
+
+      input[type="radio"] {
+        margin: 0;
+      }
+    }
+
+    button[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
+
+.checkboxes {
+  label {
+    display: block;
+    margin-bottom: 5px;
+
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+  }
+
+  .day-checkbox {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+
+.isAddFormOpen .add-form,
+.isEditFormOpen .edit-form {
+  display: block;
+}
+
+#courseCode {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff; 
+  }
+}
+
+#courseCode::-ms-expand,
+#courseCode::-webkit-select-arrow {
+  display: none; 
+}
+
+#courseCode:after {
+  content: '▼'; 
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #000; 
+}
+
+#courseCode option {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #fff; 
+  color: #000; 
+
+  &:hover {
+    background-color: #007bff; 
+    color: #fff; 
+  }
+}
+
+#courseCode option:disabled {
+  color: #ccc; 
+}
+
+
+.edit-form {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 999;
+
+  .event-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .event-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      button {
+        padding: 5px 10px;
+        background: #333;
+        color: #ccc;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        border-radius: 5px;
+
+        &.selected-event {
+          background: #007bff;
+          color: #fff;
+        }
+      }
+    }
+
+    .delete-button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background: #ff0000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  }
+
+  .form-section {
+    flex: 2;
+    padding-left: 20px;
+
+    .days-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        label {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          margin-right: 10px;
+
+          input[type="checkbox"] {
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+
+    form {
+      gap: 10px;
+
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="time"] {
+        width: 100%;
+        padding: 5px;
+        margin-top: 5px;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+      }
+
+      input[type="radio"] {
+        margin-right: 5px;
+      }
+
+      button[type="submit"] {
+        margin-top: 10px;
+        padding: 10px;
+        background: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        border: none;
+      }
+    }
+  }
+}
+
+.personal-info {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  div {
+    margin-bottom: 15px;
+
+    strong {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+  }
+
+  input {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    margin-right: 10px;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    th {
+      background-color: #004a99;
+      color: #fff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #e0e0e0;
+    }
+  }
+
+  .toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    input[type="checkbox"] {
+      appearance: none;
+      width: 40px;
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    input[type="checkbox"]:checked+label {
+      background-color: #007bff;
+    }
+
+    input[type="checkbox"]::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background-color: white;
+      border-radius: 50%;
+      top: 1px;
+      left: 1px;
+      transition: transform 0.3s;
+    }
+
+    input[type="checkbox"]:checked::before {
+      transform: translateX(20px);
+    }
+
+    label {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .public {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .private {
+      background-color: #ccc;
+      color: black;
+    }
+  }
+}

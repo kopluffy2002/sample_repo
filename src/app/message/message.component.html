@@ -1,0 +1,68 @@
+<div class="content" role="main">
+  <app-header></app-header>
+</div>
+
+<div class="container">
+
+  <div class="chat-list mat-elevation-z5">
+    <div class="button-container">
+      <button class="friend-button" (click)="toggleFriends()" [class.selected]="isFriendsSelected">Friends</button>
+      <div class="divider"></div>
+      <button class="group-button" (click)="toggleGroups()" [class.selected]="isGroupsSelected">Groups</button>
+    </div>
+
+    <div class="friends-list" *ngIf="isFriendsSelected">
+      <h2>Friends</h2>
+      <input type="text" id="searchBar" placeholder="Search Friends" [formControl]="searchFriendsControl">
+      <div *ngFor="let friend of filteredFriends" (click)="openChatWithFriend(friend)" class="friend-item"
+        [class.searched]="friend === searchedFriend">
+        {{ friend }}
+      </div>
+    </div>
+
+    <div class="friends-list" *ngIf="isGroupsSelected">
+      <h2>Groups</h2>
+      <input type="text" id="searchBar" placeholder="Search Groups" [formControl]="searchGroupsControl">
+      <div *ngFor="let group of filteredGroups" (click)="openChatWithGroup(group)" class="friend-item"
+        [class.searched]="group === searchedGroup">
+        {{ group.courseName }} - {{ group.section }}
+      </div>
+    </div>
+  </div>
+
+  <div class="messages mat-elevation-z5">
+    <h2 *ngIf="currentRoom">{{ currentRoom }}</h2>
+    <div class="message-content" id="messageContent">
+      <ng-container *ngFor="let messageGroup of groupByDate(chatMessages)">
+        <!-- Date Header -->
+        <div class="date-header" style="text-align: center;">
+          <strong>{{ messageGroup.date | date:'mediumDate' }}</strong>
+        </div>
+        <div *ngFor="let message of messageGroup.messages" [ngClass]="{'right-message': message.sender === username}">
+          <div class="message-box" *ngIf="!message.files">
+            {{ message.sender }}: {{ message.message }}
+            <span class="timestamp">{{ message.timestamp | date:'shortTime'}}</span>
+          </div>
+          <div class="message-box" *ngIf="message.files">
+            {{ message.sender }} shared file(s):
+            <div *ngFor="let file of message.files">
+              <a href="{{ apiUrl }}/uploads/{{ file }}" target="_blank">{{ file }}</a>
+            </div>
+            <span class="timestamp">{{ message.timestamp | date:'shortTime'}}</span>
+          </div>
+        </div>        
+      </ng-container>
+    </div>
+
+    <div class="message-input" *ngIf="currentRoom">
+      <input type="text" [(ngModel)]="newMessage" placeholder="Type a message..." (keydown.enter)="sendMessage()" required />
+      <button (click)="openFilePicker()">
+        <span class="upload-symbol">📄</span>
+      </button>
+      <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" multiple />
+      <button (click)="sendMessage()">
+        <span class="send-symbol">&#10148;</span>
+      </button>
+    </div>    
+  </div>
+</div>
