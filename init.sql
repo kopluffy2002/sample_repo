@@ -120,4 +120,3 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'Monkey','Luffy','luffy','luffy@uncc.edu','bHVmZnk=','0',NULL,NULL);
 UNLOCK TABLES;
-s
