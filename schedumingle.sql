@@ -127,5 +127,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `users` WRITE;
-INSERT INTO `users` VALUES (1,'Monkey','Luffy','luffy','luffy@uncc.edu','bHVmZnk=','0',NULL,NULL);
 UNLOCK TABLES;
