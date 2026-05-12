@@ -30,11 +30,6 @@ CREATE TABLE `events` (
   `course_name` varchar(255) NOT NULL,
   PRIMARY KEY (`sno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-<<<<<<< HEAD
-UNLOCK TABLES;
-
-DROP TABLE IF EXISTS `group_messages`;
-=======
 
 LOCK TABLES `events` WRITE;
 UNLOCK TABLES;
@@ -42,7 +37,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `group_messages`;
 
->>>>>>> backend
 CREATE TABLE `group_messages` (
   `id` int NOT NULL AUTO_INCREMENT,
   `sender` varchar(255) NOT NULL,
@@ -52,26 +46,11 @@ CREATE TABLE `group_messages` (
   `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-<<<<<<< HEAD
 LOCK TABLES `group_messages` WRITE;
 UNLOCK TABLES;
 
 
 DROP TABLE IF EXISTS `groups`;
-=======
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
-
-LOCK TABLES `group_messages` WRITE;
-
-UNLOCK TABLES;
-
-
-
-DROP TABLE IF EXISTS `groups`;
-
->>>>>>> backend
 CREATE TABLE `groups` (
   `sno` int NOT NULL AUTO_INCREMENT,
   `course_name` varchar(255) DEFAULT NULL,
@@ -79,14 +58,6 @@ CREATE TABLE `groups` (
   `participants` varchar(5000) DEFAULT NULL,
   PRIMARY KEY (`sno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-<<<<<<< HEAD
-
-LOCK TABLES `groups` WRITE;
-UNLOCK TABLES;
-
-
-DROP TABLE IF EXISTS `meetings`;
-=======
 
 
 LOCK TABLES `groups` WRITE;
@@ -97,7 +68,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `meetings`;
 
->>>>>>> backend
 CREATE TABLE `meetings` (
   `sno` int NOT NULL AUTO_INCREMENT,
   `username` varchar(255) DEFAULT NULL,
@@ -113,10 +83,6 @@ CREATE TABLE `meetings` (
 LOCK TABLES `meetings` WRITE;
 UNLOCK TABLES;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> backend
 DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -127,10 +93,6 @@ CREATE TABLE `messages` (
   `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-<<<<<<< HEAD
-=======
-
->>>>>>> backend
 LOCK TABLES `messages` WRITE;
 UNLOCK TABLES;
 
@@ -165,11 +127,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `users` WRITE;
-<<<<<<< HEAD
-INSERT INTO `users` VALUES (1,'Monkey','Luffy','luffy','luffy@uncc.edu','bHVmZnk=','0',NULL,NULL);
-=======
 
 INSERT INTO `users` VALUES (1,'Monkey','Luffy','luffy','luffy@uncc.edu','bHVmZnk=','0',NULL,NULL);
 
->>>>>>> backend
 UNLOCK TABLES;
