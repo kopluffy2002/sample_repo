@@ -1,37 +1,5 @@
 services:
-  # ── 1. Database ──────────────────────────────────────────────────────────────
-  db:
-    image: mysql:8.0
-    container_name: schedumingle_db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: chandu
-      MYSQL_DATABASE: schedumingle
-    ports:
-      - "3306:3306" # exposed so you can connect with MySQL Workbench
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - app-network
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "mysqladmin",
-          "ping",
-          "-h",
-          "localhost",
-          "-u",
-          "root",
-          "-pchandu",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-
-  # ── 2. Backend (Express + Socket.io) ─────────────────────────────────────────
+  # ── 1. Backend (Express + Socket.io) ─────────────────────────────────────────
   backend:
     build:
       context: .
@@ -39,26 +7,23 @@ services:
     container_name: schedumingle_backend
     restart: always
     ports:
-      - "3000:3000" # exposed for direct access/debugging
+      - "3000:3000"
     environment:
       NODE_ENV: production
-      DB_HOST: host.docker.internal
+      DB_HOST: host.docker.internal # ✅ Points to your local MySQL Workbench
       DB_PORT: 3306
       DB_NAME: schedumingle
       DB_USER: root
       DB_PASSWORD: chandu
       SESSION_SECRET: chandu123
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway" # ✅ Required on Windows
     volumes:
       - uploads:/app/uploads
-    depends_on:
-      db:
-        condition: service_healthy
     networks:
       - app-network
 
-  # ── 3. Frontend (Angular + Nginx) ────────────────────────────────────────────
+  # ── 2. Frontend (Angular + Nginx) ────────────────────────────────────────────
   frontend:
     build:
       context: .
@@ -66,7 +31,7 @@ services:
     container_name: schedumingle_frontend
     restart: always
     ports:
-      - "8080:80" # 👈 Open http:00000//localhost to access the app
+      - "8080:80"
     depends_on:
       - backend
     networks:
@@ -74,8 +39,6 @@ services:
 
 # ── Volumes ───────────────────────────────────────────────────────────────────
 volumes:
-  mysql_data:
-    driver: local
   uploads:
     driver: local
 
