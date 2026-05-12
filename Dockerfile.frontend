@@ -7,6 +7,8 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN npm install typescript@5.1.6 --save-dev --legacy-peer-deps
+
 COPY . .
 
 RUN npm run build -- --configuration production
