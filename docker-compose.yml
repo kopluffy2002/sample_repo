@@ -42,12 +42,14 @@ services:
       - "3000:3000" # exposed for direct access/debugging
     environment:
       NODE_ENV: production
-      DB_HOST: db
+      DB_HOST: host.docker.internal
       DB_PORT: 3306
       DB_NAME: schedumingle
       DB_USER: root
       DB_PASSWORD: chandu
       SESSION_SECRET: chandu123
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - uploads:/app/uploads
     depends_on:
