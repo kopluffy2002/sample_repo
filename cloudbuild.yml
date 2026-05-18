@@ -1,0 +1,81 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    id: "auth"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        docker login -u oauth2accesstoken \
+        -p $(gcloud auth print-access-token) \
+        asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo
+
+  # ── Build Backend ─────────────────────────────────────────────────────────────
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-backend"
+    args:
+      - build
+      - -t
+      - asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo/backend:$COMMIT_SHA
+      - -f
+      - Dockerfile.backend
+      - .
+
+  # ── Push Backend ──────────────────────────────────────────────────────────────
+  - name: "gcr.io/cloud-builders/docker"
+    id: "push-backend"
+    args:
+      - push
+      - asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo/backend:$COMMIT_SHA
+
+  # ── Deploy Backend to Cloud Run ───────────────────────────────────────────────
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "deploy-backend"
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - schedumingle-backend
+      - --image=asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo/backend:$COMMIT_SHA
+      - --region=asia-south1
+      - --platform=managed
+      - --allow-unauthenticated
+      - --add-cloudsql-instances=schedumingle-496211:asia-south1:schedumingle-db
+      - --set-env-vars=NODE_ENV=production,DB_NAME=schedumingle,DB_USER=root,DB_PASSWORD=chandu,SESSION_SECRET=chandu123,CLOUD_SQL_INSTANCE=schedumingle-496211:asia-south1:schedumingle-db
+
+  # ── Build Frontend ────────────────────────────────────────────────────────────
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-frontend"
+    args:
+      - build
+      - -t
+      - asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo/frontend:$COMMIT_SHA
+      - -f
+      - Dockerfile.frontend
+      - .
+
+  # ── Push Frontend ─────────────────────────────────────────────────────────────
+  - name: "gcr.io/cloud-builders/docker"
+    id: "push-frontend"
+    args:
+      - push
+      - asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo/frontend:$COMMIT_SHA
+
+  # ── Deploy Frontend to Cloud Run ──────────────────────────────────────────────
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "deploy-frontend"
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - schedumingle-frontend
+      - --image=asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo/frontend:$COMMIT_SHA
+      - --region=asia-south1
+      - --platform=managed
+      - --allow-unauthenticated
+
+images:
+  - asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo/backend:$COMMIT_SHA
+  - asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo/frontend:$COMMIT_SHA
+
+options:
+  logging: CLOUD_LOGGING_ONLY
