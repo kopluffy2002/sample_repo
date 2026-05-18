@@ -7,7 +7,7 @@ steps:
       - |
         docker login -u oauth2accesstoken \
         -p $(gcloud auth print-access-token) \
-        asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle-repo
+        asia-south1-docker.pkg.dev
 
   # ── Build Backend ─────────────────────────────────────────────────────────────
   - name: "gcr.io/cloud-builders/docker"
