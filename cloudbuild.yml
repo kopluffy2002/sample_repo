@@ -1,5 +1,5 @@
 steps:
-  # ── Build images ─────────────────────────────────────────────────
+  # ── Build Backend ─────────────────────────────────────────────────
   - name: gcr.io/cloud-builders/docker
     args:
       [
@@ -11,30 +11,12 @@ steps:
         .,
       ]
 
-  - name: gcr.io/cloud-builders/docker
-    args:
-      [
-        build,
-        -t,
-        asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle/frontend:$COMMIT_SHA,
-        -f,
-        Dockerfile.frontend,
-        .,
-      ]
-
-  # ── Push images ───────────────────────────────────────────────────
+  # ── Push Backend ──────────────────────────────────────────────────
   - name: gcr.io/cloud-builders/docker
     args:
       [
         push,
         asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle/backend:$COMMIT_SHA,
-      ]
-
-  - name: gcr.io/cloud-builders/docker
-    args:
-      [
-        push,
-        asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle/frontend:$COMMIT_SHA,
       ]
 
   # ── Deploy Backend ────────────────────────────────────────────────
@@ -49,9 +31,30 @@ steps:
       - --platform=managed
       - --allow-unauthenticated
       - --port=8080
-      - --add-cloudsql-instances=schedumingle-496211:asia-south1:YOUR_INSTANCE_NAME
-      - --set-env-vars=DB_HOST=/cloudsql/schedumingle-496211:asia-south1:YOUR_INSTANCE_NAME,DB_NAME=schedumingle,DB_USER=chandu
+      - --add-cloudsql-instances=schedumingle-496211:asia-south1:schedumingle-db
+      - --set-env-vars=DB_HOST=/cloudsql/schedumingle-496211:asia-south1:schedumingle-db,DB_NAME=schedumingle,DB_USER=chandu
       - --set-secrets=DB_PASSWORD=MYSQL_PASSWORD:latest,SESSION_SECRET=SESSION_SECRET:latest
+
+  # ── Build Frontend ────────────────────────────────────────────────
+  # (comes AFTER backend deploy so nginx.conf has the real backend URL)
+  - name: gcr.io/cloud-builders/docker
+    args:
+      [
+        build,
+        -t,
+        asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle/frontend:$COMMIT_SHA,
+        -f,
+        Dockerfile.frontend,
+        .,
+      ]
+
+  # ── Push Frontend ─────────────────────────────────────────────────
+  - name: gcr.io/cloud-builders/docker
+    args:
+      [
+        push,
+        asia-south1-docker.pkg.dev/schedumingle-496211/schedumingle/frontend:$COMMIT_SHA,
+      ]
 
   # ── Deploy Frontend ───────────────────────────────────────────────
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
