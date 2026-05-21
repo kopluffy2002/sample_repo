@@ -31,7 +31,7 @@ steps:
       - --platform=managed
       - --allow-unauthenticated
       - --port=8080
-      - --add-cloudsql-instances=schedumingle-496211:asia-south1:schedumingle-db
+      - --set-env-vars=DB_HOST=34.93.15.5,DB_NAME=schedumingle,DB_USER=chandu,DB_PORT=3306
       - --set-env-vars=DB_HOST=/cloudsql/schedumingle-496211:asia-south1:schedumingle-db,DB_NAME=schedumingle,DB_USER=chandu
       - --set-secrets=DB_PASSWORD=MYSQL_PASSWORD:latest,SESSION_SECRET=SESSION_SECRET:latest
 
