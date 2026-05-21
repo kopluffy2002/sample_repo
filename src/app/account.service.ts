@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = environment.apiUrl; // ← pulls from environment file automatically
 
   constructor(private http: HttpClient) {}
 
@@ -24,9 +25,10 @@ export class AccountService {
   }
 
   deleteClass(sno: number, username: string) {
-    const url = `${this.apiUrl}/account/${sno}?username=${username}`; // Include username in the URL
+    const url = `${this.apiUrl}/account/${sno}?username=${username}`;
     return this.http.delete(url);
   }
+
   getEvents(username: string) {
     return this.http.get<any[]>(
       `${this.apiUrl}/account/events?username=${username}`,

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SignupService {
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = environment.apiUrl; // ← pulls from environment file automatically
 
-  constructor(private http: HttpClient) {}  
+  constructor(private http: HttpClient) {}
 
   signup(user: any) {
     console.log('Sending signup request with user data:', user);

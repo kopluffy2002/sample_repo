@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ForgotPasswordService {
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -14,7 +15,7 @@ export class ForgotPasswordService {
     const data = {
       email: email,
       username: username,
-      newPassword: newPassword
+      newPassword: newPassword,
     };
 
     // Make a POST request to your server's forgot password endpoint
