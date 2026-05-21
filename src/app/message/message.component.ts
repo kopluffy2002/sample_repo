@@ -18,7 +18,6 @@ import { MessageService } from '../message.service';
 })
 export class MessageComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef;
-  apiUrl = 'http://0.0.0.0:3000';
   allFriends: string[] = [];
   username: string | null = null;
   searchFriendsControl = new FormControl();
@@ -44,9 +43,10 @@ export class MessageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.username = sessionStorage.getItem('username') || null;
     if (this.username) {
+      this.messageService.registerUser(this.username); // ← add this line
       this.fetchAllFriends();
       this.fetchAllGroups();
-      this.messageService.openWebSocket().subscribe(
+      this.messageService.onMessage().subscribe(
         (message: any) => {
           this.chatMessages.push(message);
         },
@@ -55,8 +55,6 @@ export class MessageComponent implements OnInit, OnDestroy {
         },
         () => {},
       );
-    } else {
-      console.error('Username not found in SessionStorage');
     }
 
     this.searchFriendsControl.valueChanges
@@ -79,7 +77,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Clean up WebSocket connection
+    this.messageService.ngOnDestroy();
   }
 
   toggleFriends() {
