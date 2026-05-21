@@ -1,25 +1,14 @@
 FROM node:20-alpine AS builder
-
 WORKDIR /app
-
 COPY package*.json ./
-
 RUN npm install
-
 RUN npm install typescript@5.1.6 --save-dev --legacy-peer-deps
-
 COPY . .
-
 RUN npm run build -- --configuration production
 
-
 FROM nginx:alpine
-
-# ↓ Adjust 'schedumingle/browser' to match your actual dist output folder name
-COPY --from=builder /app/dist/schedumingle/browser /usr/share/nginx/html
-
+# ✅ Files are directly in dist/ — no subfolder
+COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 EXPOSE 8080
-
 CMD ["nginx", "-g", "daemon off;"]
