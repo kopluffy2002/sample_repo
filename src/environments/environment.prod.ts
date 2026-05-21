@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://schedumingle-backend-XXXXXXX-el.a.run.app', // ← your Cloud Run backend URL
+  apiUrl: '/api', // ← empty string means calls go to same origin (frontend)
 };
