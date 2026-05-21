@@ -12,10 +12,9 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 // ── Middleware ────────────────────────────────────────────────────────────────
-app.use(cors());
+
 app.use(express.json());
 app.use(bodyParser.json());
-app.use("/uploads", express.static("uploads"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // ── HTTP + Socket.io ──────────────────────────────────────────────────────────
@@ -23,7 +22,7 @@ app.use(
   cors({
     origin: [
       "https://schedumingle-frontend-516427689972.asia-south1.run.app",
-      "http://localhost:4200", // for local dev
+      "http://localhost:4200",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

@@ -32,7 +32,7 @@ steps:
       - --allow-unauthenticated
       - --port=8080
       - --clear-cloudsql-instances
-      - --set-env-vars=DB_HOST=34.93.15.5,DB_NAME=schedumingle,DB_USER=chandu,DB_PORT=3306
+      - --env-vars-file=env.yaml
       - --set-secrets=DB_PASSWORD=MYSQL_PASSWORD:latest,SESSION_SECRET=SESSION_SECRET:latest
 
   # ── Build Frontend ────────────────────────────────────────────────
